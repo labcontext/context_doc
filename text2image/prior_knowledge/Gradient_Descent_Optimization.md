@@ -1,7 +1,7 @@
 #  Gradient Descent Optimization Algorithms 
 ![image](https://user-images.githubusercontent.com/26568793/57982028-60ca9a00-7a7a-11e9-8f17-2611c1756718.png)
 
-<center> [참고링크](https://www.slideshare.net/yongho/ss-79607172) </center> 
+[참고링크](https://www.slideshare.net/yongho/ss-79607172)
 
 Neural network의 weight를 조절하는 과정에서 사용하는 방법으로, 네트워크에서 내놓는 결과값과 실제 결과값 사이의 차이를 정의하는 함수인 Loss function의 값을 최소화하기 위해서 기울기 값을 사용하는 방법이며 gradient의 반대 방향으로 일정크기만큼 이동해내는 것을 반복하여 loss function의 값을 최소화하는 값을 찾는 것. 이 때 Loss function을 계산할 때 전체 train set을 사용하는 것을 Batch Gradient Descent라고 한다. 여러 방법들이 존재하지만 실험에 사용한 Optimizer에 대한 간단한 소개만 하도록 하겠다. 
 
@@ -21,7 +21,7 @@ Neural network의 weight를 조절하는 과정에서 사용하는 방법으로,
 
 ------
 
-### Adam [^3]
+### [Adam](https://dalpo0814.tistory.com/29)
 
 '잘 모르겠으면 그냥 Adam을 써라'에서 자주 듣는 Adam이다. 
 
