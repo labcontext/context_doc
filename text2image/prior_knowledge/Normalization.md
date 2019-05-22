@@ -2,17 +2,23 @@
 
 ### Batch normalization 
 
-![image](https://user-images.githubusercontent.com/26568793/57982037-80fa5900-7a7a-11e9-9058-c3b28cdc5308.png)
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/26568793/57982037-80fa5900-7a7a-11e9-9058-c3b28cdc5308.png">
+</p>
 
 각 층의 출력 값을 정규화하는 방법, DNN은 학습의 층이 깊어지면 깊어질수록 weight값의 변화가 가중돼서 쌓이면 값의 변화가 커지기 때문이다. 즉, hidden layer 내의 값의 변화가 큰 것이 문제가 되는 것이다. 처음 학습했던 노드의 분포와 다음에 학습하는 분포가 다르다면 학습이 잘 안된다. 이게 바로 ‘Internal Covariate Shift’이다. 이를 해결하기 위해서 Batch norm이 제안되었는데, BN은 신경망 안에 포함되어 training 시에 평균과 분산을 조정하는 과정 역시 같이 조정이 된다. 
 
-**[다시 이해하기]** [^4]
+[[다시 이해하기](https://de-novo.org/2018/05/28/batch-normalization-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0/)]
 
-![image](https://user-images.githubusercontent.com/26568793/57982039-88b9fd80-7a7a-11e9-9778-7ed7b6dec5db.png)
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/26568793/57982039-88b9fd80-7a7a-11e9-9778-7ed7b6dec5db.png">
+</p>
 
 W1은 X를 바탕으로 학습, 복습, 업데이트 된다. X는 proprocessing되어 normalized input이므로 layer “A”는 비슷한 input distribution을 가진다. 따라서 안정적으로 W1을 학습할 수 있다. 
 
-![image](https://user-images.githubusercontent.com/26568793/57982042-91aacf00-7a7a-11e9-8ae8-a1a4929a8395.png)
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/26568793/57982042-91aacf00-7a7a-11e9-8ae8-a1a4929a8395.png">
+</p>
 
 W2는 a를 바탕으로 학습, 업데이트 된다. f(XW1)은 W1의 값에 따라 분포가 달라진다. 즉, layer B의 input distribution은 고정되어 있지않다. 따라서 안정적으로 W2를 학습할 수 없다.  
 
@@ -28,5 +34,29 @@ W2는 a를 바탕으로 학습, 업데이트 된다. f(XW1)은 W1의 값에 따�
 
 딥러닝은 거의 항상 전체의 sample을 mini batch로 나누어 학습을 진행하여 가중치를 업데이트 하기 때문에 이전층의 출력을 표준화 할 때도 각 batch마다 따로 표준화를 진행하면 된다. 따라서 mini batch의 평균과 표준편차로 표준화한 activation 값을 은닉층 B의 입력으로 사용하면 은닉층B 역시 고정된 분포로 학습을 진행할 수 있다. 하지만 이런 식으로 은닉층의 입력을 표준화 하면 gradient update 과정에서 bias 값이 무시된다. 따라서 bias대신 평향의 역할을 할 파라미터가 추가되어야 한다. 또한 raw activation의 분포를 고정하는 것이 좋긴하지만 항상 N(0,1)로 고정할 필요는 없다. 적절하게 scaling, shifting된 activation을 사용하는 것이 학습에 도움이 될 수 있다. 따라서 해당 방식을 이용하여 activation function의 입력으로 사용하는 것을  BatchNorm이라고 한다. 
 
-[^4]:  [https://de-novo.org/2018/05/28/batch-normalization-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0/](https://de-novo.org/2018/05/28/batch-normalization-이해하기/)
+### [Layer Normalization](<https://www.slideshare.net/ssuser06e0c5/normalization-72539464>) 
+
+
+
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/26568793/58149805-6228dc00-7c9f-11e9-9cd0-ac33ce5538f4.png">
+</p>
+
+해당 Normalization의 목표는 state-of-art한 DNN의 학습시간을 단축시키고 싶어 중간층의 출력을 정규화 함으로서 실현하고자 한다. 해당 방식은 Batch size에 의존하지 않아 온라인 학습이나 작은 mini-batch도 사용할 수 있다. 또한 Train과 Test의 계산 방법이 동일하며 그대로 RNN에 적용이 가능하다. (이 모두가 BN에서의 한계점이었다.)  채널과 영상전체를 모두 normalize
+시켜주는 기술. LN은 mini-bath의 feature의 수가 같아야 한다.
+
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/26568793/58149993-31957200-7ca0-11e9-9a65-0afe1baa4af1.png">
+</p>
+
+BN과 LN의 차이점은 아래의 그림과 도표를 참고하면 된다. 
+
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/26568793/58150227-edef3800-7ca0-11e9-939f-6a90d95621aa.png">
+</p>
+
+| BN                                                           | LN                                                           |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Batch 차원에서 정규화                                        | Feature 차원에서 정규화                                      |
+| Batch 전체에서 계산이 이루어짐<br />각 Batch에서 동일하게 계산 | 각 특성에 대하여 따로 계산이 이루어지며<br />각 특성에 독립적으로 계산한다. <br />Batch 사이즈에 상관이 없고 RNN에 매우 좋은 성능을 보임<br /> 동일한 층의 뉴런 간 정규화 |
 
