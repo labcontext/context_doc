@@ -1,8 +1,4 @@
-# Normalization & 기타
-
-
-
-## Normalization
+# Normalization
 
 #### 1. Batch normalization 
 
@@ -97,3 +93,18 @@ instance 단위로 normalization을 수행하는 것으로, 영상전체가 아�
 
 
 논문에서는 'Batch'라는 것이 언제나 이상적인 Normalization이 될 수 없음을 보여주며, 또한 Batch에 독립적으로 동작하는 기존의 LN과 IN보다 성능이 좋음을 실험을 통해 보여주었다. 더 자세한 내용은 위 연결된 링크에서 간단한 논문 리뷰를 볼 수 있다. 
+
+
+
+# 기타 
+
+####  1.  [Multi modal 분포]([https://learnai.tistory.com/category/Deep%20Learning](https://learnai.tistory.com/category/Deep Learning))
+
+Mode가 여러 개 존재하는 것으로 mnist의 경우에는 각각의 숫자 10개가 mode에 해당하는 것이다. 
+
+Mode라는 것은 최빈값으로 가장 빈도가 높은 값을 의미한다. 
+
+#### 2.Mode collapse
+
+D와 G가 서로를 속고 속이며 제자리를 맴도는 것, 즉 양쪽 모두 수렴할 수 없게 된다. G입장에서는 어떤 data를 생성하든 D만 속이면 되는 것이기 때문이다. 
+
