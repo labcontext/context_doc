@@ -1,6 +1,10 @@
-# Normalization 
+# Normalization & 기타
 
-### Batch normalization 
+
+
+## Normalization
+
+#### 1. Batch normalization 
 
 <p align="center">
    <img src="https://user-images.githubusercontent.com/26568793/57982037-80fa5900-7a7a-11e9-9058-c3b28cdc5308.png">
@@ -34,7 +38,9 @@ W2는 a를 바탕으로 학습, 업데이트 된다. f(XW1)은 W1의 값에 따�
 
 딥러닝은 거의 항상 전체의 sample을 mini batch로 나누어 학습을 진행하여 가중치를 업데이트 하기 때문에 이전층의 출력을 표준화 할 때도 각 batch마다 따로 표준화를 진행하면 된다. 따라서 mini batch의 평균과 표준편차로 표준화한 activation 값을 은닉층 B의 입력으로 사용하면 은닉층B 역시 고정된 분포로 학습을 진행할 수 있다. 하지만 이런 식으로 은닉층의 입력을 표준화 하면 gradient update 과정에서 bias 값이 무시된다. 따라서 bias대신 평향의 역할을 할 파라미터가 추가되어야 한다. 또한 raw activation의 분포를 고정하는 것이 좋긴하지만 항상 N(0,1)로 고정할 필요는 없다. 적절하게 scaling, shifting된 activation을 사용하는 것이 학습에 도움이 될 수 있다. 따라서 해당 방식을 이용하여 activation function의 입력으로 사용하는 것을  BatchNorm이라고 한다. 
 
-### [Layer Normalization](<https://www.slideshare.net/ssuser06e0c5/normalization-72539464>) 
+--------------------------
+
+#### 2. [Layer Normalization](<https://www.slideshare.net/ssuser06e0c5/normalization-72539464>) 
 
 
 
@@ -60,10 +66,34 @@ BN과 LN의 차이점은 아래의 그림과 도표를 참고하면 된다.
 | Batch 차원에서 정규화                                        | Feature 차원에서 정규화                                      |
 | Batch 전체에서 계산이 이루어짐<br />각 Batch에서 동일하게 계산 | 각 특성에 대하여 따로 계산이 이루어지며<br />각 특성에 독립적으로 계산한다. <br />Batch 사이즈에 상관이 없고 RNN에 매우 좋은 성능을 보임<br /> 동일한 층의 뉴런 간 정규화 |
 
-### Instance normalizaion 
+
+
+------------
+
+#### 3. Instance normalization 
 
 <p align="center">
    <img src="https://user-images.githubusercontent.com/26568793/58152364-5ccf8f80-7ca7-11e9-9dc4-e31127ca7739.png">
 </p>
 
-instance 단위로 normalization을 수행하는 것으로, 영상전체가 아닌 각 영상의 채널 단위로 normalization을 사용한다. BN은 batch 및 공간 위치의 전체에서 ‘모든 이미지’를 정규화한다. 반대로 IN은 각 배치를 독립적으로, 즉 공간 위치에서만 정규화를 진행한다. style transfer을 위해 고안된 Instance Normalizaion은 network가 원본 이미지와 변형된 이미지가 구분할 수 없는 특성을 가지길 바라며 설계된 것으로, 이미지에 국한된 정규화로 RNN에는 사용할 수 없다. real-time-generation에 효과적이다. 
+instance 단위로 normalization을 수행하는 것으로, 영상전체가 아닌 각 **영상의 채널 단위로** normalization을 사용한다. BN은 batch 및 공간 위치의 전체에서 ‘모든 이미지’를 정규화한다. 반대로 IN은 각 배치를 독립적으로, 즉 **공간 위치에서만 정규화를 진행**한다. style transfer을 위해 고안된 Instance Normalizaion은 network가 원본 이미지와 변형된 이미지가 구분할 수 없는 특성을 가지길 바라며 설계된 것으로, 이미지에 국한된 정규화로 RNN에는 사용할 수 없다. real-time-generation에 효과적이다. 
+
+----------------------
+
+#### 4. [Group normalization](<https://www.youtube.com/watch?v=m3TN9FFmqsI>)
+
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/26568793/58160580-b5a82380-7cb9-11e9-99d2-5c6e533c4cf5.png">
+</p>
+
+각 채널을 N개의 Group으로 나누어 normalize 시켜주는 기술이다.  group normalization은 기존 normalization과 연관된 점이 많다. 
+
+* **Layer Norm** :  Group Norm에서 N개의 채널을 나누어 Norm을 해줬다면 LN에서는 모든 채널을 하나의 그룹으로 넣어 Norm을 진행한다. 
+
+* **Instance Norm** : Group Norm에서 N개의 채널을 나누어 Norm을 해줬다면 IN에서는 하나의 채널을 이용하여 Norm을 진행한다. 
+
+* **Batch Norm** : IN과 비교했을 때 IN이라는 것은 batch당 하나의 이미지를 Norm하는 것이라 볼 수 있다. 
+
+
+
+논문에서는 'Batch'라는 것이 언제나 이상적인 Normalization이 될 수 없음을 보여주며, 또한 Batch에 독립적으로 동작하는 기존의 LN과 IN보다 성능이 좋음을 실험을 통해 보여주었다. 더 자세한 내용은 위 연결된 링크에서 간단한 논문 리뷰를 볼 수 있다. 
