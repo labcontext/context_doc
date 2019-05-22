@@ -60,3 +60,10 @@ BN과 LN의 차이점은 아래의 그림과 도표를 참고하면 된다.
 | Batch 차원에서 정규화                                        | Feature 차원에서 정규화                                      |
 | Batch 전체에서 계산이 이루어짐<br />각 Batch에서 동일하게 계산 | 각 특성에 대하여 따로 계산이 이루어지며<br />각 특성에 독립적으로 계산한다. <br />Batch 사이즈에 상관이 없고 RNN에 매우 좋은 성능을 보임<br /> 동일한 층의 뉴런 간 정규화 |
 
+### Instance normalizaion 
+
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/26568793/58152364-5ccf8f80-7ca7-11e9-9dc4-e31127ca7739.png">
+</p>
+
+instance 단위로 normalization을 수행하는 것으로, 영상전체가 아닌 각 영상의 채널 단위로 normalization을 사용한다. BN은 batch 및 공간 위치의 전체에서 ‘모든 이미지’를 정규화한다. 반대로 IN은 각 배치를 독립적으로, 즉 공간 위치에서만 정규화를 진행한다. style transfer을 위해 고안된 Instance Normalizaion은 network가 원본 이미지와 변형된 이미지가 구분할 수 없는 특성을 가지길 바라며 설계된 것으로, 이미지에 국한된 정규화로 RNN에는 사용할 수 없다. real-time-generation에 효과적이다. 
